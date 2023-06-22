@@ -1,7 +1,14 @@
 package com.mall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.mall.product.entity.CategoryBrandRelationEntity;
+import com.mall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,6 +26,10 @@ import com.mall.product.service.CategoryService;
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -49,6 +60,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return collect;
     }
 
+
+
     public List<CategoryEntity> getChildren(CategoryEntity root, List<CategoryEntity> all){
 
         List<CategoryEntity> children = all.stream().filter((categoryEntity) -> {
@@ -64,4 +77,45 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     }
 
+/*
+    属性分组的目录回显，新定义了一个catalogPath用来收集目录的三级分类id
+*/
+    @Override
+    public Long[] getParentPath(Long catalogId) {
+
+        List<Long> path = new ArrayList<>();
+        //递归的查询
+        List<Long> parentPath = findPath(catalogId, path);
+        Collections.reverse(parentPath);
+
+
+        return parentPath.toArray(new Long[parentPath.size()]);
+    }
+
+
+
+    public List<Long> findPath(Long catalogId, List<Long> path){
+        path.add(catalogId);
+
+        CategoryEntity categoryEntity = this.getById(catalogId);
+        if(categoryEntity.getParentCid() != 0){
+            findPath(categoryEntity.getParentCid(), path);
+        }
+
+        return path;
+    }
+
+
+    @Override
+    public void updatePro(CategoryEntity category) {
+        this.updateById(category);
+
+        if(StringUtils.isNotEmpty(category.getName())){
+            CategoryBrandRelationEntity categoryBrandRelationEntity = new CategoryBrandRelationEntity();
+            categoryBrandRelationEntity.setCatelogName(category.getName());
+            categoryBrandRelationEntity.setCatelogId(category.getCatId());
+            categoryBrandRelationService.update(categoryBrandRelationEntity,
+                    new UpdateWrapper<CategoryBrandRelationEntity>().eq("catelog_id",category.getCatId()));
+        }
+    }
 }

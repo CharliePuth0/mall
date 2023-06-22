@@ -3,7 +3,9 @@ package com.mall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.mall.common.exception.valid.AddBrand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import com.mall.product.service.BrandService;
 import com.mall.common.utils.PageUtils;
 import com.mall.common.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
@@ -55,7 +58,7 @@ public class BrandController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody BrandEntity brand){
+    public R save(@Validated(AddBrand.class) @RequestBody BrandEntity brand){
 		brandService.save(brand);
 
         return R.ok();
@@ -66,7 +69,8 @@ public class BrandController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+		brandService.updatePro(brand);
+        System.out.println("更新了。。。。");
 
         return R.ok();
     }

@@ -22,7 +22,7 @@
         <module>mall-seckill</module>
         <module>mall-auth-server</module>
         <module>mall-search</module>
-        <module>renren-fast</module>
+        <module>mall-administration</module>
     </modules>
 
 </project>
