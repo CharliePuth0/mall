@@ -23,8 +23,8 @@ public class OssController {
     OSS ossClient;
 
     private String endpoint = "oss-cn-beijing.aliyuncs.com";
-    private String bucket = "mall2023";
-    private String accessId = "LTAI5tMY3XCViuBmUUKpe9Vt";
+    private String bucket = "你自己的bucket";
+    private String accessId = "你自己的id";
 
 
 
