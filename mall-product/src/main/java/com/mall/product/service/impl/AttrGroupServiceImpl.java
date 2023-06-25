@@ -1,8 +1,17 @@
 package com.mall.product.service.impl;
 
+import com.mall.product.entity.AttrEntity;
+import com.mall.product.service.AttrService;
+import com.mall.product.vo.AttrGroupWithAttrsVo;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +25,10 @@ import com.mall.product.service.AttrGroupService;
 
 @Service("attrGroupService")
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
+
+
+    @Autowired
+    private AttrService attrService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -56,6 +69,35 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             IPage<AttrGroupEntity> page = this.page(new Query<AttrGroupEntity>().getPage(params), wrapper);
             return new PageUtils(page);
         }
+    }
+
+    @Override
+    public PageUtils queryNoAttr(Map<String, Object> params, Long attrGroupId) {
+
+        return null;
+
+
+    }
+
+    @Override
+    public List<AttrGroupWithAttrsVo> getAttrGroupAndAttrsWithCatelogId(Long catelogId) {
+
+        //根据catalogid找出所有相关的分组
+        List<AttrGroupEntity> attrGroupEntities = this.list(
+                new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
+
+        //根据分组得到所有的属性信息组装成一个list返回，但是需要查询中间表，，，，真尬死了，为什么一对多要查询中间表啊
+        List<AttrGroupWithAttrsVo> collect = attrGroupEntities.stream().map((item) -> {
+            AttrGroupWithAttrsVo attrGroupWithAttrsVo = new AttrGroupWithAttrsVo();
+            BeanUtils.copyProperties(item, attrGroupWithAttrsVo);
+
+            List<AttrEntity> attrs = attrService.getAttrs(attrGroupWithAttrsVo.getAttrGroupId());
+            attrGroupWithAttrsVo.setAttrs(attrs);
+            return attrGroupWithAttrsVo;
+        }).collect(Collectors.toList());
+
+        return collect;
+
     }
 
 }

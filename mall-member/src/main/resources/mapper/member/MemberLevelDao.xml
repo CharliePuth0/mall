@@ -17,5 +17,17 @@
         <result property="note" column="note"/>
     </resultMap>
 
+<!--    <insert id="saveBasic" parameterType="com.mall.member.entity.MemberLevelEntity">-->
+<!--        INSERT INTO ums_member_level ( id, name, growth_point, default_status, free_freight_point,-->
+<!--                           comment_growth_point, priviledge_free_freight, priviledge_member_price,-->
+<!--                           priviledge_birthday, note)-->
+<!--        VALUES ( #{memberLevel.id}, #{memberLevel.name}, #{memberLevel.growthPoint}, #{memberLevel.defaultStatus}, #{memberLevel.freeFreightPoint},-->
+<!--                #{memberLevel.commentGrowthPoint}, #{memberLevel.priviledgeFreeFreight}, #{memberLevel.priviledgeMemberPrice},-->
+<!--                #{memberLevel.priviledgeBirthday}, #{memberLevel.note})-->
+<!--    </insert>-->
+
+
+
+
 
 </mapper>

@@ -3,12 +3,17 @@ package com.mall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.mall.product.entity.AttrAttrgroupRelationEntity;
+import com.mall.product.entity.AttrGroupEntity;
+import com.mall.product.service.AttrAttrgroupRelationService;
+import com.mall.product.service.AttrGroupService;
+import com.mall.product.service.CategoryService;
+import com.mall.product.vo.AttrRespVo;
+import com.mall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import com.mall.product.entity.AttrEntity;
 import com.mall.product.service.AttrService;
@@ -30,6 +35,27 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
+
+    @Autowired
+    private CategoryService categoryService;
+
+
+    @Autowired
+    private AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+    @Autowired
+    private AttrGroupService attrGroupService;
+
+
+    @GetMapping("{type}/list/{catId}")
+    public R attrList(@RequestParam Map<String, Object> params, @PathVariable("type") String attrType, @PathVariable("catId") Long catelogId){
+
+        PageUtils page = attrService.queryPagePro(params,attrType,catelogId);
+
+
+        return R.ok().put("page",page);
+    }
+
     /**
      * 列表
      */
@@ -48,15 +74,28 @@ public class AttrController {
     public R info(@PathVariable("attrId") Long attrId){
 		AttrEntity attr = attrService.getById(attrId);
 
+        Long catalogId = attr.getCatelogId();
+        Long[] parentPath = categoryService.getParentPath(catalogId);
+        attr.setCatalogPath(parentPath);
+
+
+        if(  attr.getAttrType() == 1){
+            Long attId =  attr.getAttrId();
+            String name = attrAttrgroupRelationService.getgroupName(attId);
+            attr.setGroupName(name);
+        }
+
+
         return R.ok().put("attr", attr);
     }
 
     /**
      * 保存
      */
+    @Transactional
     @RequestMapping("/save")
-    public R save(@RequestBody AttrEntity attr){
-		attrService.save(attr);
+    public R save(@RequestBody AttrRespVo attrRespVo){
+		attrService.savePro(attrRespVo);
 
         return R.ok();
     }

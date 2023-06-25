@@ -56,7 +56,7 @@ public class MemberLevelController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody MemberLevelEntity memberLevel){
-		memberLevelService.save(memberLevel);
+        memberLevelService.save(memberLevel);
 
         return R.ok();
     }
