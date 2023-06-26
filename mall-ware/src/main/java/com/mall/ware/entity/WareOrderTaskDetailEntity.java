@@ -2,19 +2,24 @@ package com.mall.ware.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
-import lombok.Data;
 
 /**
  * 库存工作单
  * 
- * @author sugerdaddy
- * @email KFCv50@gmail.com
- * @date 2023-06-09 20:36:05
+ * @author wangyanfeng
+ * @email 2011912434@qq.com
+ * @date 2021-12-27 14:06:22
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 @TableName("wms_ware_order_task_detail")
 public class WareOrderTaskDetailEntity implements Serializable {
 	private static final long serialVersionUID = 1L;

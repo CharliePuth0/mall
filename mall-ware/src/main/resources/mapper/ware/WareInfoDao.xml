@@ -12,4 +12,9 @@
     </resultMap>
 
 
+    <insert id="insertvo" parameterType="com.mall.ware.entity.WareInfoEntity">
+        INSERT INTO wms_ware_info (id, name, address, areacode)
+        VALUES (#{id}, #{name}, #{address}, #{areacode})
+    </insert>
+
 </mapper>

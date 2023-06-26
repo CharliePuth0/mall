@@ -1,34 +1,40 @@
 package com.mall.ware.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.mall.ware.entity.PurchaseEntity;
 import com.mall.ware.service.PurchaseService;
 import com.mall.common.utils.PageUtils;
 import com.mall.common.utils.R;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Map;
 
 
 
 /**
  * 采购信息
  *
- * @author sugerdaddy
- * @email KFCv50@gmail.com
- * @date 2023-06-09 20:36:05
  */
 @RestController
 @RequestMapping("ware/purchase")
 public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
+
+
+
+
+
+
+    //查询未领取的采购单  用于合并
+    @RequestMapping("/unreceive/list")
+    public R unreceivelist(@RequestParam Map<String, Object> params){
+        PageUtils page = purchaseService.queryPageUnreceivePurchase(params);
+
+        return R.ok().put("page", page);
+    }
 
     /**
      * 列表

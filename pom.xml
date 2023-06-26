@@ -23,6 +23,7 @@
         <module>mall-auth-server</module>
         <module>mall-search</module>
         <module>mall-administration</module>
+        <module>renren-generator</module>
     </modules>
 
 </project>

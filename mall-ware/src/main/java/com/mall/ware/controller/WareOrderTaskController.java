@@ -1,28 +1,20 @@
 package com.mall.ware.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.mall.ware.entity.WareOrderTaskEntity;
 import com.mall.ware.service.WareOrderTaskService;
 import com.mall.common.utils.PageUtils;
 import com.mall.common.utils.R;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
 /**
  * 库存工作单
  *
- * @author sugerdaddy
- * @email KFCv50@gmail.com
- * @date 2023-06-09 20:36:05
  */
 @RestController
 @RequestMapping("ware/wareordertask")

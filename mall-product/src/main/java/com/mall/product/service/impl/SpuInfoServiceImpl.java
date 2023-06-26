@@ -1,5 +1,6 @@
 package com.mall.product.service.impl;
 
+import com.mall.product.vo.SpuSaveVo;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -24,6 +25,14 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void savePro(SpuSaveVo spuSaveVo) {
+
+
+
+
     }
 
 }
