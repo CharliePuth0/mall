@@ -1,14 +1,14 @@
 package com.mall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.mall.product.entity.AttrAttrgroupRelationEntity;
 import com.mall.product.entity.AttrGroupEntity;
-import com.mall.product.service.AttrAttrgroupRelationService;
-import com.mall.product.service.AttrGroupService;
-import com.mall.product.service.CategoryService;
+import com.mall.product.entity.ProductAttrValueEntity;
+import com.mall.product.service.*;
 import com.mall.product.vo.AttrRespVo;
 import com.mall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.mall.product.entity.AttrEntity;
-import com.mall.product.service.AttrService;
 import com.mall.common.utils.PageUtils;
 import com.mall.common.utils.R;
 
@@ -46,6 +45,17 @@ public class AttrController {
     @Autowired
     private AttrGroupService attrGroupService;
 
+    @Autowired
+    private ProductAttrValueService productAttrValueService;
+
+
+    @GetMapping("/base/listforspu/{spuId}")
+    public R baseAttrlistforspu(@PathVariable("spuId") Long spuId){
+
+        List<ProductAttrValueEntity> entities = productAttrValueService.baseAttrlistforspu(spuId);
+
+        return R.ok().put("data",entities);
+    }
 
     @GetMapping("{type}/list/{catId}")
     public R attrList(@RequestParam Map<String, Object> params, @PathVariable("type") String attrType, @PathVariable("catId") Long catelogId){

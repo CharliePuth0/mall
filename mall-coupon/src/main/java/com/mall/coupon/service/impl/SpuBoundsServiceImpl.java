@@ -1,5 +1,6 @@
 package com.mall.coupon.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,9 +19,19 @@ public class SpuBoundsServiceImpl extends ServiceImpl<SpuBoundsDao, SpuBoundsEnt
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+
+
+        String key = (String) params.get("key");
+        QueryWrapper<SpuBoundsEntity> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotEmpty(key)){
+            wrapper.and(i -> {
+                i.eq("id",key).or().eq("spu_id",key);
+            });
+        }
+
         IPage<SpuBoundsEntity> page = this.page(
                 new Query<SpuBoundsEntity>().getPage(params),
-                new QueryWrapper<SpuBoundsEntity>()
+                wrapper
         );
 
         return new PageUtils(page);

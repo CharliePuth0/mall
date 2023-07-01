@@ -4,6 +4,7 @@ import com.mall.ware.entity.PurchaseEntity;
 import com.mall.ware.service.PurchaseService;
 import com.mall.common.utils.PageUtils;
 import com.mall.common.utils.R;
+import com.mall.ware.vo.MergeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,12 @@ public class PurchaseController {
     private PurchaseService purchaseService;
 
 
+    @PostMapping("/merge")
+    public R merge(@RequestBody MergeVo mergeVo){
 
+        purchaseService.mergePurchase(mergeVo);
+        return R.ok();
+    }
 
 
 
