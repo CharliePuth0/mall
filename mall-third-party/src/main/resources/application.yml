@@ -10,11 +10,11 @@ spring:
         #默认8719端口，假如被占用会自动从8719开始依次+1扫描，直至找到未被占用的端口
         port: 8719
     alicloud:
-      access-key: LTAI5tMY3XCViuBmUUKpe9Vt
-      secret-key: qZaFHaeMURnJND3NjvajbFTmEZ8PT8
+      access-key: 自己的key
+      secret-key: 字节的secret
       oss:
         endpoint: oss-cn-beijing.aliyuncs.com
-        bucket: mall2023
+        bucket: 自己的bucket
 
 
 
