@@ -6,6 +6,7 @@ import com.mall.product.service.CategoryBrandRelationService;
 import com.mall.product.vo.Catelog2Vo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang.StringUtils;
 
@@ -32,6 +33,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -132,9 +136,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
 
     //首页的三级分类列表的展示
-//    @Cacheable(value = "category",key = "#root.method.name")
+    @Cacheable(value = "category",key = "#root.method.name")
     @Override
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
+
+
 
         //将数据库的多次查询变为一次
         List<CategoryEntity> selectList = this.baseMapper.selectList(null);
